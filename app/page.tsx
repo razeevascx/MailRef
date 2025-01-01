@@ -61,8 +61,8 @@ const Page = () => {
             </span>
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Generate unlimited email aliases and virtual phone numbers. Stay
-            private online while managing everything from one dashboard.
+            Generate unlimited email aliases. Stay private online while managing
+            everything from one dashboard.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
             <Button
@@ -93,25 +93,6 @@ const Page = () => {
               <FeatureCard key={index} {...feature} />
             ))}
           </div>
-        </div>
-      </div>
-
-      {/* CTA */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-700 py-20">
-        <div className="max-w-4xl mx-auto px-4 text-center space-y-6">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Ready to get started?
-          </h2>
-          <p className="text-xl text-blue-100 mb-8">
-            Join thousands of users protecting their online identity.
-          </p>
-          <Button
-            size="lg"
-            variant="secondary"
-            className="text-lg px-8 h-12 hover:-translate-y-0.5 transition-transform"
-          >
-            Start Free Trial <ArrowRight className="ml-2" size={20} />
-          </Button>
         </div>
       </div>
     </div>

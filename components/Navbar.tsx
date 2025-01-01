@@ -10,7 +10,6 @@ function Navbar() {
   const links = [
     { id: 1, name: 'Home', url: '/' },
     { id: 2, name: 'FAQ', url: '/faq' },
-    { id: 3, name: 'Contact', url: '/contact' },
   ];
 
   return (
