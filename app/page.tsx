@@ -1,6 +1,7 @@
 import React from 'react';
 import { Shield, Mail, ArrowRight, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 interface FeatureCardProps {
   icon: React.ReactNode;
@@ -34,12 +35,16 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
   title,
   description,
 }) => (
-  <div className="p-8 rounded-xl hover:shadow-lg transition-all duration-300 bg-white border border-gray-100 hover:-translate-y-1">
-    <div className="w-14 h-14 bg-gradient-to-br from-blue-100 to-blue-50 rounded-xl flex items-center justify-center text-blue-600 mb-6">
+  <div className="p-8 rounded-xl hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 hover:-translate-y-1">
+    <div className="w-14 h-14 bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900 dark:to-blue-700 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-300 mb-6">
       {icon}
     </div>
-    <h3 className="text-2xl font-semibold mb-3 text-gray-900">{title}</h3>
-    <p className="text-gray-600 leading-relaxed">{description}</p>
+    <h3 className="text-2xl font-semibold mb-3 text-gray-900 dark:text-gray-100">
+      {title}
+    </h3>
+    <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+      {description}
+    </p>
   </div>
 );
 
@@ -60,7 +65,7 @@ const Page = () => {
               Without Compromise
             </span>
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl  max-w-2xl mx-auto leading-relaxed">
             Generate unlimited email aliases. Stay private online while managing
             everything from one dashboard.
           </p>
@@ -69,7 +74,9 @@ const Page = () => {
               size="lg"
               className="text-lg px-8 h-12 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 hover:-translate-y-0.5 transition-all"
             >
-              Join Now <ArrowRight className="ml-2" size={20} />
+              <Link href="/get-started">
+                Join Now <ArrowRight className="ml-2" size={20} />
+              </Link>
             </Button>
           </div>
         </div>
@@ -77,13 +84,13 @@ const Page = () => {
 
       {/* Features */}
       <div className="py-24 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-white via-blue-50/50 to-white -z-10" />
+        <div className="absolute inset-0" />
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-16 space-y-4">
-            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+            <h2 className="text-4xl font-bold mb-4">
               Everything you need to stay private online
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl ">
               Powerful features that protect your identity without sacrificing
               convenience.
             </p>
