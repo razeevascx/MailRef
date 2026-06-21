@@ -28,7 +28,7 @@ const ThemeSwitcher = () => {
       variant="ghost"
       size="sm"
       onClick={toggleTheme}
-      className="relative overflow-hidden rounded-full p-2 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 dark:focus:ring-offset-slate-900"
+      className="relative overflow-hidden rounded-[12px] p-2 hover:bg-[#1A2440]/5 dark:hover:bg-white/5 focus:outline-none"
     >
       <span className="sr-only">Toggle theme</span>
       <Sun

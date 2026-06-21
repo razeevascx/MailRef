@@ -1,111 +1,86 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
+import React from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
-const Page: React.FC = () => {
+export default function FAQPage() {
   const faqs = [
     {
-      id: 'faq-1',
-      question: 'What is MailRef?',
-      answer:
-        'MailRef is an email aliasing service that helps you protect your privacy by creating unique email addresses for every service you use.',
+      question: 'What is a Relay email mask?',
+      answer: 'Email masks are masked, or private, email addresses that forward messages to your true email address. These masks allow you to share an address with third parties which will mask your true email address and forward messages to it.',
     },
     {
-      id: 'faq-2',
-      question: 'How does email aliasing work?',
-      answer:
-        'When you sign up for a service, you generate a unique email alias. Emails sent to this alias are forwarded to your real inbox, keeping your main email private.',
+      question: 'I\'m not getting messages from my email masks',
+      answer: `There are a few reasons you might not be receiving emails forwarded through your masks. These reasons include:\n* Messages are going into spam\n* Your email provider is blocking your email masks\n* The email forwarded has an attachment larger than 10 MB\n* The site doesn\'t accept email masks\n* The mask might have forwarding turned off\n* Relay might be taking longer than usual to forward your messages\nIf you\'re struggling with any of these issues, please visit our support site.`,
     },
     {
-      id: 'faq-3',
-      question: 'Can I block unwanted emails?',
-      answer:
-        'Yes. You can block specific aliases to stop receiving emails from services you no longer use.',
+      question: 'When should I use Relay email masks?',
+      answer: 'You can use Relay email masks most places you\'d use your regular email address. We recommend using them when signing up for marketing/informational emails where you may want to control whether or not you receive emails in the future.',
     },
     {
-      id: 'faq-4',
-      question: 'Is MailRef secure?',
-      answer:
-        'Yes. MailRef prioritizes your privacy and security. We do not track your activity or share your data with third parties.',
+      question: 'Why did my email masks start to use the domain "mozmail.com?"',
+      answer: 'We made the switch from "relay.firefox.com" to "mozmail.com" in order to make it possible to get a custom email subdomain, such as mask@yourdomain.mozmail.com. Custom email subdomains, available to Relay Premium subscribers, allow you to generate easier-to-remember email masks.',
     },
     {
-      id: 'faq-6',
-      question: 'Is there a free plan available?',
-      answer:
-        'Yes. MailRef offers a free plan that includes basic email aliasing features. You can upgrade for more advanced options.',
+      question: 'Will Firefox Relay forward emails with attachments?',
+      answer: 'We now support attachment forwarding. However, there is a 10 MB limit for email forwarding using Relay. Any emails larger than 10 MB will not be forwarded.',
     },
     {
-      id: 'faq-7',
-      question: 'How do I get started?',
-      answer:
-        'Getting started is simple. Sign up for a free account, create your first alias, and start using it right away.',
-    },
-    {
-      id: 'faq-9',
-      question: 'What happens if an alias is compromised?',
-      answer:
-        'You can disable the compromised alias immediately, ensuring that your real email and other aliases remain secure.',
-    },
-    {
-      id: 'faq-10',
-      question: 'Is MailRef responsive and mobile-friendly?',
-      answer:
-        'Yes. MailRef is fully responsive and works seamlessly on all devices, including smartphones, tablets, and desktops.',
+      question: 'What happens to my custom subdomain if I unsubscribe from Relay Premium?',
+      answer: 'If you downgrade from Relay Premium, you\'ll still receive emails forwarded through your custom email masks, but you\'ll no longer be able to create new masks using that sub-domain. If you have more than 50 masks in total, you will not be able to create any more. You\'ll also lose the ability to reply to forwarded messages. You can resubscribe to Relay Premium and regain access to these features.',
     },
   ];
 
   return (
-    <div className="min-h-screen py-16 ">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="text-center mb-16 space-y-4">
-          <h1 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent dark:from-gray-100 dark:to-gray-400">
+    <div className="min-h-screen text-[#1A2440] dark:text-white py-24 px-4 sm:px-6 lg:px-8 font-sans transition-colors duration-300">
+      <div className="max-w-5xl mx-auto space-y-12">
+        {/* Header */}
+        <div className="text-center space-y-6">
+
+          <h1 className="font-serif text-5xl sm:text-6xl font-normal tracking-tight text-[#1A2440] dark:text-white mt-6">
             Frequently Asked Questions
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Get answers to common questions about MailRef's features and functionality
-          </p>
+          {/* <p className="text-sm font-light text-[#1A2440]/70 dark:text-slate-300 max-w-lg mx-auto leading-relaxed">
+            Learn how our serverless architecture, edge mail routing, and database security shield you from spammers and tracking.
+          </p> */}
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Featured FAQs */}
-          <div className="grid gap-6">
-            {faqs.slice(0, 2).map((faq) => (
-              <div
-                key={faq.id}
-                className="p-6 rounded-xl hover:shadow-md transition-shadow dark:text-gray-300"
-              >
-                <h2 className="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 dark:border-gray-700">
-                  {faq.question}
-                </h2>
-                <p className="leading-7 [&:not(:first-child)]:mt-6">
-                  {faq.answer}
-                </p>
-              </div>
-            ))}
-          </div>
 
-          {/* Full FAQ Accordion */}
-          <div className="p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-            <h2 className="text-2xl font-semibold mb-6 dark:text-gray-300">More Questions</h2>
-            <Accordion type="single" collapsible className="w-full">
-              {faqs.slice(2).map((faq) => (
-                <AccordionItem key={faq.id} value={faq.id}>
-                  <AccordionTrigger className="text-left font-medium dark:text-gray-300">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-gray-600 dark:text-gray-400">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
+          {faqs.map((faq, index) => (
+            <div key={index} className="gradient-shell-wrapper shadow-sm">
+              <div className="gradient-shell-inner p-8 h-full flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <h3 className="text-base font-semibold text-[#1A2440] dark:text-white font-sans leading-snug">
+                      {faq.question}
+                    </h3>
+                  </div>
+                  <p className="text-xs text-[#1A2440]/75 dark:text-slate-400 leading-relaxed font-light font-sans">
                     {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* CTA Banner */}
+        <div className="gradient-shell-wrapper shadow-sm max-w-3xl mx-auto">
+          <div className="gradient-shell-inner p-8 text-center space-y-4">
+            <h3 className="text-lg font-semibold text-[#1A2440] dark:text-white font-sans">Take control of your inbox today</h3>
+            <p className="text-[#1A2440]/70 dark:text-slate-300 text-xs font-light max-w-md mx-auto leading-relaxed">
+              Create up to 5 email aliases completely free. Shield your primary mailbox from hackers and spammers in under 2 minutes.
+            </p>
+            <div className="pt-2">
+              <Link href="/get-started">
+                <Button className="bg-[#1A2440] hover:bg-[#1A2440]/90 text-white dark:bg-white dark:hover:bg-white/90 dark:text-[#1A2440] font-semibold rounded-[12px] px-8 h-10 border border-transparent text-xs shadow-sm">
+                  Get Started Free
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 }
-export default Page;
