@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState } from 'react';
 import Link from 'next/link';
@@ -9,7 +9,12 @@ import { useSearchParams } from 'next/navigation';
 import Mailref from '@/components/Mailref';
 import { Shield, Sparkles, HelpCircle } from 'lucide-react';
 
-export default function Page() {
+import { Suspense } from 'react';
+
+export const dynamic = 'force-dynamic';
+
+function GetStartedContent() {
+  'use client';
   const searchParams = useSearchParams();
   const next = searchParams?.get('next') ?? '/dashboard';
   const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +28,7 @@ export default function Page() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
+          redirectTo: `${globalThis.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
         },
       });
       if (error) throw error;
@@ -37,7 +42,7 @@ export default function Page() {
     <div className="flex items-center justify-center min-h-[80vh] p-6 text-[#1A2440] dark:text-white font-sans">
       <div className="gradient-shell-wrapper w-full sm:w-[28rem] shadow-xl">
         <div className="gradient-shell-inner p-8 space-y-6">
-          
+
           {/* Header Section */}
           <div className="text-center space-y-4">
             <div className="flex justify-center">
@@ -77,7 +82,7 @@ export default function Page() {
             <p className="text-[10px] font-bold uppercase tracking-wider text-[#1A2440]/40 dark:text-slate-400 text-center">
               Privacy & Security Guaranteed
             </p>
-            
+
             <div className="space-y-3.5">
               <div className="flex items-start gap-3">
                 <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-[6px] bg-[#0A3BBF]/10 dark:bg-white/10 text-[#0A3BBF] dark:text-white">
@@ -87,7 +92,7 @@ export default function Page() {
                   <strong className="text-[#1A2440] dark:text-white">Zero data logs:</strong> We parse and route emails on the edge. Your raw message contents are never stored.
                 </p>
               </div>
-              
+
               <div className="flex items-start gap-3">
                 <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-[6px] bg-[#0A3BBF]/10 dark:bg-white/10 text-[#0A3BBF] dark:text-white">
                   <Sparkles className="h-3 w-3" />
@@ -101,8 +106,8 @@ export default function Page() {
 
           {/* Footer Assistance */}
           <div className="text-center pt-2">
-            <Link 
-              href="/faq" 
+            <Link
+              href="/faq"
               className="inline-flex items-center gap-1.5 text-xs text-[#0A3BBF] dark:text-blue-400 hover:underline font-semibold"
             >
               <HelpCircle className="h-3.5 w-3.5 text-[#0A3BBF] dark:text-blue-400" />
@@ -113,5 +118,13 @@ export default function Page() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={null}>
+      <GetStartedContent />
+    </Suspense>
   );
 }

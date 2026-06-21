@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  Mail, Shield, Trash2, Plus, Edit2, 
+import {
+  Mail, Shield, Trash2, Plus, Edit2,
   Check, Copy, Search, Loader2,
   X, Ban, ArrowUpRight, ArrowDownLeft, Sparkles, Settings, User
 } from 'lucide-react';
@@ -16,13 +16,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { toast } from 'sonner';
-import { 
-  createAlias, 
-  toggleAliasStatus, 
-  updateAliasDescription, 
-  deleteAlias, 
-  getBlockedSenders, 
-  blockSender, 
+import {
+  createAlias,
+  toggleAliasStatus,
+  updateAliasDescription,
+  deleteAlias,
+  getBlockedSenders,
+  blockSender,
   unblockSender
 } from '@/app/dashboard/actions';
 
@@ -60,23 +60,23 @@ interface DashboardProps {
 export default function Dashboard({ initialAliases, initialLogs, userEmail }: DashboardProps) {
   const [aliases, setAliases] = useState<Alias[]>(initialAliases);
   const [logs, setLogs] = useState<ForwardingLog[]>(initialLogs);
-  
+
   // Search and Filters
   const [searchQuery, setSearchQuery] = useState('');
   const [filterActive, setFilterActive] = useState<'all' | 'active' | 'inactive'>('all');
-  
+
   // Modals & Dynamic State
   const [isGenerating, setIsGenerating] = useState(false);
   const [newAliasDesc, setNewAliasDesc] = useState('');
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  
+
   // Editing Alias Description
   const [editingAlias, setEditingAlias] = useState<Alias | null>(null);
   const [editDesc, setEditDesc] = useState('');
-  
+
   // Deleting Alias
   const [deletingAliasId, setDeletingAliasId] = useState<string | null>(null);
-  
+
   // Manage Blocked Senders modal
   const [selectedAlias, setSelectedAlias] = useState<Alias | null>(null);
   const [blockedSenders, setBlockedSenders] = useState<any[]>([]);
@@ -90,10 +90,10 @@ export default function Dashboard({ initialAliases, initialLogs, userEmail }: Da
 
   // Filtered Aliases list
   const filteredAliases = aliases.filter(alias => {
-    const matchesSearch = 
+    const matchesSearch =
       alias.prefix.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (alias.description && alias.description.toLowerCase().includes(searchQuery.toLowerCase()));
-      
+
     if (filterActive === 'active') return matchesSearch && alias.is_active;
     if (filterActive === 'inactive') return matchesSearch && !alias.is_active;
     return matchesSearch;
@@ -122,7 +122,7 @@ export default function Dashboard({ initialAliases, initialLogs, userEmail }: Da
   // Toggle active switch
   const handleToggleActive = async (aliasId: string, currentStatus: boolean) => {
     const targetStatus = !currentStatus;
-    
+
     // Optimistic UI update
     setAliases(prev => prev.map(a => a.id === aliasId ? { ...a, is_active: targetStatus } : a));
 
@@ -209,10 +209,10 @@ export default function Dashboard({ initialAliases, initialLogs, userEmail }: Da
         // Reload list
         const list = await getBlockedSenders(selectedAlias.id);
         setBlockedSenders(list);
-        
+
         // Optimistic stats update for the alias
         setAliases(prev => prev.map(a => a.id === selectedAlias.id ? { ...a, emails_blocked: a.emails_blocked + 1 } : a));
-        
+
         setNewBlockEmail('');
       } else {
         toast.error(result.error || 'Failed to block sender');
@@ -233,34 +233,16 @@ export default function Dashboard({ initialAliases, initialLogs, userEmail }: Da
       } else {
         toast.error(result.error || 'Failed to unblock sender');
       }
-    } catch (err) {
+    } catch(err) {
       toast.error('An error occurred.');
     }
   };
 
-  // Update target forwarding email in settings
-  const handleUpdateEmail = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!profileEmail.trim() || profileEmail === userEmail) return;
-    setIsUpdatingEmail(true);
-    try {
-      const result = await updateProfileEmail(profileEmail);
-      if (result.success) {
-        toast.success('Forwarding target email updated');
-      } else {
-        toast.error(result.error || 'Failed to update target email');
-      }
-    } catch (err) {
-      toast.error('An unexpected error occurred.');
-    } finally {
-      setIsUpdatingEmail(false);
-    }
-  };
 
   return (
     <div className="min-h-screen text-[#1A2440] dark:text-white transition-colors duration-300 font-sans pb-24">
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
-        
+
         {/* Welcome Banner */}
         <section className="gradient-shell-wrapper shadow-md">
           <div className="gradient-shell-inner p-8">
@@ -282,7 +264,7 @@ export default function Dashboard({ initialAliases, initialLogs, userEmail }: Da
             </div>
           </div>
         </section>
-        
+
         {/* Statistics Cards */}
         <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {/* Card 1: Total Aliases */}
@@ -361,16 +343,16 @@ export default function Dashboard({ initialAliases, initialLogs, userEmail }: Da
 
             <form onSubmit={handleGenerate} className="flex flex-col sm:flex-row w-full md:w-auto gap-3 items-stretch sm:items-center">
               <div className="flex-1 min-w-[240px]">
-                <Input 
-                  placeholder="Description (e.g. Amazon, Newsletter)" 
+                <Input
+                  placeholder="Description (e.g. Amazon, Newsletter)"
                   value={newAliasDesc}
                   onChange={(e) => setNewAliasDesc(e.target.value)}
                   className="w-full bg-transparent border border-[#1A2440]/15 dark:border-white/15 rounded-[12px] px-5 py-2 text-[#1A2440] dark:text-white placeholder-[#1A2440]/45 dark:placeholder-white/45 focus-visible:ring-[#0A3BBF] h-10 text-sm"
                   disabled={isGenerating}
                 />
               </div>
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 className="bg-[#1A2440] hover:bg-[#1A2440]/90 text-white dark:bg-white dark:hover:bg-white/90 dark:text-[#1A2440] font-semibold rounded-[12px] px-8 shrink-0 text-xs h-10 border border-transparent shadow-sm"
                 disabled={isGenerating}
               >
@@ -420,8 +402,8 @@ export default function Dashboard({ initialAliases, initialLogs, userEmail }: Da
                     <button
                       onClick={() => setFilterActive('all')}
                       className={`px-4 py-1.5 rounded-[12px] text-xs font-semibold transition ${
-                        filterActive === 'all' 
-                          ? 'bg-[#1A2440] text-white dark:bg-white dark:text-[#1A2440] shadow-sm' 
+                        filterActive === 'all'
+                          ? 'bg-[#1A2440] text-white dark:bg-white dark:text-[#1A2440] shadow-sm'
                           : 'text-[#1A2440]/70 dark:text-slate-400 hover:text-[#1A2440] dark:hover:text-white'
                       }`}
                     >
@@ -430,8 +412,8 @@ export default function Dashboard({ initialAliases, initialLogs, userEmail }: Da
                     <button
                       onClick={() => setFilterActive('active')}
                       className={`px-4 py-1.5 rounded-[12px] text-xs font-semibold transition ${
-                        filterActive === 'active' 
-                          ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-450 border border-emerald-500/25' 
+                        filterActive === 'active'
+                          ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-450 border border-emerald-500/25'
                           : 'text-[#1A2440]/70 dark:text-slate-400 hover:text-[#1A2440] dark:hover:text-white'
                       }`}
                     >
@@ -440,8 +422,8 @@ export default function Dashboard({ initialAliases, initialLogs, userEmail }: Da
                     <button
                       onClick={() => setFilterActive('inactive')}
                       className={`px-4 py-1.5 rounded-[12px] text-xs font-semibold transition ${
-                        filterActive === 'inactive' 
-                          ? 'bg-[#1A2440]/10 dark:bg-white/10 text-[#1A2440] dark:text-white border border-[#1A2440]/15 dark:border-white/15' 
+                        filterActive === 'inactive'
+                          ? 'bg-[#1A2440]/10 dark:bg-white/10 text-[#1A2440] dark:text-white border border-[#1A2440]/15 dark:border-white/15'
                           : 'text-[#1A2440]/70 dark:text-slate-400 hover:text-[#1A2440] dark:hover:text-white'
                       }`}
                     >
@@ -515,9 +497,9 @@ export default function Dashboard({ initialAliases, initialLogs, userEmail }: Da
                                     checked={alias.is_active}
                                     onCheckedChange={() => handleToggleActive(alias.id, alias.is_active)}
                                   />
-                                  <Badge 
-                                    variant="outline" 
-                                    className={`rounded-[12px] px-3 py-0.5 text-[9px] font-semibold tracking-wide uppercase border-none ${alias.is_active 
+                                  <Badge
+                                    variant="outline"
+                                    className={`rounded-[12px] px-3 py-0.5 text-[9px] font-semibold tracking-wide uppercase border-none ${alias.is_active
                                       ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-450'
                                       : 'bg-[#1A2440]/10 dark:bg-white/10 text-slate-400'
                                     }`}
@@ -545,7 +527,7 @@ export default function Dashboard({ initialAliases, initialLogs, userEmail }: Da
                                   >
                                     <Edit2 className="w-3.5 h-3.5" />
                                   </Button>
-                                  
+
                                   <Dialog>
                                     <DialogTrigger render={
                                       <Button
@@ -570,7 +552,7 @@ export default function Dashboard({ initialAliases, initialLogs, userEmail }: Da
 
                                       {/* Block Email Form */}
                                       <form onSubmit={handleAddBlock} className="flex gap-2 items-center py-2">
-                                        <Input 
+                                        <Input
                                           type="email"
                                           placeholder="annoying-sender@spam.com"
                                           value={newBlockEmail}
@@ -597,9 +579,9 @@ export default function Dashboard({ initialAliases, initialLogs, userEmail }: Da
                                           blockedSenders.map((b) => (
                                             <div key={b.id} className="flex justify-between items-center px-4 py-2.5 text-xs">
                                               <span className="font-semibold text-[#1A2440] dark:text-slate-300 font-mono">{b.sender_email}</span>
-                                              <Button 
-                                                variant="ghost" 
-                                                size="icon" 
+                                              <Button
+                                                variant="ghost"
+                                                size="icon"
                                                 className="w-6 h-6 rounded-[12px] text-[#1A2440]/60 dark:text-slate-400 hover:text-red-500"
                                                 onClick={() => handleRemoveBlock(b.sender_email)}
                                               >
@@ -611,7 +593,7 @@ export default function Dashboard({ initialAliases, initialLogs, userEmail }: Da
                                       </div>
                                     </DialogContent>
                                   </Dialog>
-                                  
+
                                   <Button
                                     variant="ghost"
                                     size="icon"
@@ -673,7 +655,7 @@ export default function Dashboard({ initialAliases, initialLogs, userEmail }: Da
                               {log.subject || '(No Subject)'}
                             </TableCell>
                             <TableCell className="py-4 text-right pr-6">
-                              <Badge 
+                              <Badge
                                 className={`rounded-[12px] px-3 py-1 text-[9px] font-semibold uppercase tracking-wider border-none ${
                                   log.status === 'forwarded'
                                     ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-450'
@@ -726,7 +708,7 @@ export default function Dashboard({ initialAliases, initialLogs, userEmail }: Da
 
           <div className="py-2 space-y-2 text-left">
             <Label htmlFor="edit-description" className="text-xs font-semibold text-[#1A2440]/70 dark:text-slate-400 uppercase tracking-wide">Description Label</Label>
-            <Input 
+            <Input
               id="edit-description"
               value={editDesc}
               onChange={(e) => setEditDesc(e.target.value)}
@@ -760,7 +742,7 @@ export default function Dashboard({ initialAliases, initialLogs, userEmail }: Da
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel className="rounded-[12px] text-[#1A2440]/70 dark:text-slate-400 hover:bg-[#1A2440]/10 dark:hover:bg-white/10 border border-[#1A2440]/10 dark:border-white/10">Cancel</AlertDialogCancel>
-            <AlertDialogAction 
+            <AlertDialogAction
               onClick={handleDeleteAlias}
               className="bg-red-650 hover:bg-red-750 text-white font-semibold rounded-[12px] px-6 text-xs h-10 border border-transparent shadow-sm"
             >

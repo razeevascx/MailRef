@@ -10,7 +10,7 @@ export default function FAQPage() {
     },
     {
       question: 'I\'m not getting messages from my email masks',
-      answer: `There are a few reasons you might not be receiving emails forwarded through your masks. These reasons include:\n* Messages are going into spam\n* Your email provider is blocking your email masks\n* The email forwarded has an attachment larger than 10 MB\n* The site doesn\'t accept email masks\n* The mask might have forwarding turned off\n* Relay might be taking longer than usual to forward your messages\nIf you\'re struggling with any of these issues, please visit our support site.`,
+      answer: `There are a few reasons you might not be receiving emails forwarded through your masks. These reasons include:\n* Messages are going into spam\n* Your email provider is blocking your email masks\n* The email forwarded has an attachment larger than 10 MB\n* The site doesn\'t accept email masks\n* The mask might have forwarding turned off\n* Relay might be taking longer than usual to forward your messages\nIf you're struggling with any of these issues, please visit our support site.`,
     },
     {
       question: 'When should I use Relay email masks?',
